@@ -21,13 +21,18 @@
 package tschipp.carryon.common.carry;
 
 import net.minecraft.world.entity.player.Player;
+import tschipp.carryon.Constants;
 import tschipp.carryon.platform.Services;
 
 public class CarryOnDataManager {
 
-    public static CarryOnData getCarryData(Player player)
-    {
-        return Services.PLATFORM.getCarryData(player);
+    public static CarryOnData getCarryData(Player player) {
+        CarryOnData data = Services.PLATFORM.getCarryData(player);
+        if (data == null || !data.isValid()) {
+            Constants.LOG.warn("Invalid CarryOnData for player {}, returning empty", player.getName().getString());
+            return new CarryOnData();
+        }
+        return data;
     }
 
     public static void setCarryData(Player player, CarryOnData data)
